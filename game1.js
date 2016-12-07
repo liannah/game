@@ -5,64 +5,91 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 
-
-const NUM_POINTS = 20; 
+const NUM_POINTS = 20;//20 + Math.random();
 const points = [];
+let ants = document.getElementsByClassName("points");
 
-var image1=document.getElementById("mypictureID");
-var image2=document.getElementById("mypictureID2");
-const size = Math.random() * 0.01;
+for (let i = 0; i < NUM_POINTS; i++) {
 
-for(let i = 0; i < NUM_POINTS; i++) {
-  points.push({
-    x: Math.random() * (canvas.width-2*size),
-    y: Math.random() * (canvas.height-2*size),
-    width: size,
-    height: size,
-    xDelta: 0.9,
-    yDelta: 1,
-    image: image1,  //set the starting image     
-  });
+    const size = 50+Math.random() * 100;
+    points.push({
+       
+        x: Math.random() * (canvas.width - 2 * size),
+        y: Math.random() * (canvas.height - 2 * size),
+        height: size,
+        width:  2*size,
+
+        xDelta: 1, // the change that you will add to x, you can flip it when you get to the edge
+
+        yDelta: 1, // the change that you will add to y, you can flip it when you get to the edge
+        isDead: false
+
+    });
+
 }
-const draw = function()
-{
-  context.clearRect(0,0,canvas.width,canvas.height);
 
-  for (let i=0;i<NUM_POINTS;i++)
-  {
-    point=points[i];
-   
-    context.drawImage(point.image,point.x,point.y); //Draw the image from points array
+var leftimg = new Image();
+leftimg.src = "./ant.png";
 
-    point.x+=point.xDelta;
-    point.y+=point.yDelta;
+var rightimg = new Image();
+rightimg.src= "./ant2.png";
 
-    if(point.x<=0 ||point.x>=canvas.width-point.width)
-    {
-      point.xDelta*=-1;
-      
-          if(point.image==image1)point.image=image2; //Switch the images when hitting edge
-          else
-              point.image=image1;
+var img = new Image();
+img.src= "./yellow.png"
+
+const draw = function () {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    points.forEach(function (l) {
+        
+
+        if(l.isDead) { context.drawImage(img, l.x, l.y, l.width, l.height);
+
+        } else if(l.xDelta > 0) {
+            context.drawImage(rightimg, l.x, l.y, l.width, l.height);
+        } else  {
+            context.drawImage(leftimg, l.x, l.y, l.width, l.height);
+        }
+        
+
+        l.x += l.xDelta;
+        l.y += l.yDelta;
+
+        if (l.x + l.width >= canvas.width-10 || l.x <= 0) {
+            l.xDelta *= -1;
+        }
+
+        if (l.y + l.height >= canvas.height-10 || l.y <= 0) {
+            l.yDelta *= -1;
+        }
+
+    });
+    
     }
-
-    if(point.y<=0 ||point.y>=canvas.height-point.height)
-    {
-      point.yDelta*=-1;
-      
-        if(point.image==image1)point.image=image2; //Switch the images when hitting edge
-        else
-          point.image=image1;
-    }
-  }
-
-};
-
-let animate = function() {
+let animate = function () {
     draw();
-    setTimeout(animate, 1);
-};
+    requestAnimationFrame(animate);
+}
+
 animate();
+
+
+$("#canvas").on('mousedown', function(e){
+
+    const getMouseCo =function(){
+
+
+    points.forEach(function(p){
+        if (e.clientX > p.x && e.clientX < p.x + p.width && e.clientY > p.y && e.clientY < p.height+p.y){
+            p.isDead = true;
+            p.xDelta = 0;
+            p.yDelta = 0;
+        }
+    })
+}
+
+
+    getMouseCo();
+});
 
 
 
