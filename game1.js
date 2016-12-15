@@ -63,7 +63,7 @@ const draw = function () {
         }
 
     });
-    
+    drawScore();
     }
 let animate = function () {
     draw();
@@ -77,23 +77,99 @@ $("#canvas").on('mousedown', function(e){
 
     const getMouseCo =function(){
 
+    points.forEach(function(p) {
+       var sound = new Audio('./split2.wav');
 
-    points.forEach(function(p){
         if (e.clientX > p.x && e.clientX < p.x + p.width && e.clientY > p.y && e.clientY < p.height+p.y){
             p.isDead = true;
             p.xDelta = 0;
             p.yDelta = 0;
+            sound.play();
+}
+
         }
-    })
+    )
 }
 
 
     getMouseCo();
 });
 
+var score = 0;
+
+$("#canvas").on('mousedown', function(e){
+function detectionofclick() {
+
+points.forEach(function(p){
+        if (e.clientX > p.x && e.clientX < p.x + p.width && e.clientY > p.y && e.clientY < p.height+p.y) { 
+            score++; 
+         if(score > NUM_POINTS) {
+                        alert("YOU WIN, CONGRATS!");
+                        document.location.reload();
+        }
+
+    }
+
+})
+}
+detectionofclick();
+
+});
+
+function drawScore() {
+    context.font = "16px Arial";
+    context.fillStyle = "#0095DD";
+    context.fillText("Score: "+score, 100, 20);
+}
 
 
 
+let sTime = new Date().getTime();
+let countDown =10;
 
 
+function UpdateTime() {
+    let cTime = new Date().getTime();
+    let diff = cTime - sTime;
+    let seconds = countDown - Math.floor(diff / 1000);
+    if (seconds >= 0) {
+        let minutes = Math.floor(seconds / 60);
+        seconds -= minutes * 60;
+        $("#minutes").text(minutes < 10 ? "0" + minutes : minutes);
+        $("#seconds").text(seconds < 10 ? "0" + seconds : seconds);
+    } else {
+       $("#countdown").hide();
+        clearInterval(counter);
+    }
+}
+UpdateTime();
+let counter = setInterval(UpdateTime, 500);
+//where n is the number of minutes required.
+ //function getTimeRemaining(endtime) {
+  //var t = Date.parse(endtime) - Date.parse(new Date());
+  //var seconds = Math.floor((t / 1000) % 60);
+  //return {
+    //'total': t,
+    //'seconds': seconds
+  //};
+//}
 
+//function initializeClock(id, endtime) {
+  //var clock = document.getElementById(id);
+  //var secondsSpan = clock.querySelector('.seconds');
+
+  //function updateClock() {
+    //var t = getTimeRemaining(endtime);
+
+    //secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+    //if (t.total <= 0) {
+      //alert("Game is over");
+    //}
+  //}
+
+  //updateClock();
+//}
+
+//var deadline = new Date(Date.parse(new Date()) + 15 * 24 * 60 * 60 * 1000);
+//initializeClock('clockdiv', deadline);
