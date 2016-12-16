@@ -1,5 +1,6 @@
 
 
+
 let canvas = document.getElementById("canvas");
 let context = canvas.getContext("2d");
 
@@ -14,7 +15,7 @@ let points = [];
 let satkacikner = [];
 let countDown =20;
 let current_lvl = 1;
-var levelchange = false;
+
 
 
 constructAnts();
@@ -116,17 +117,26 @@ $("#canvas").on('mousedown', function(e){
                  {
                    if(current_lvl<3)
                         {
-                             alert("Good job!");
+                        	//levelchange = true;
+                            swal(
+                            'Good job!',
+                            'Next level!',
+                            'warning'
+                             )
                               current_lvl++; 
-                              levelchange = true;    
                               next_lvl();
+                                    
 
 
 
                         }
                         else {
-                          alert("Congratulations! You win!");
-                          document.location.reload();
+
+                          swal("Congratulations!",
+                          	"You win!",
+                          	 "success"
+                          	 );
+                             document.location.reload();
                           //stopgame();
                         }
 
@@ -140,10 +150,7 @@ $("#canvas").on('mousedown', function(e){
 
 function next_lvl()
 {
-	 if (levelchange) {
-     context.drawImage(newlevel, 350, 200)
 
-     }
     clearInterval(animation);
     context.clearRect(0, 0, canvas.width, canvas.height);
     countDown-=5;
@@ -156,8 +163,8 @@ function next_lvl()
 
 }
 function drawScore() {
-    context.font = "16px Arial";
-    context.fillStyle = "#0095DD";
+    context.font = "20px New Roman";
+    context.fillStyle = "#00000";
     context.fillText("Score: "+score, 100, 20);
     context.fillText("Level: "+current_lvl, 100, 40);
 }
