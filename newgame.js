@@ -4,7 +4,7 @@ let canvas = document.getElementById("canvas");
 let context = canvas.getContext("2d");
 
 canvas.width = window.innerWidth-25;
-canvas.height = window.innerHeight-60;
+canvas.height = window.innerHeight-150;
 
 
 
@@ -116,7 +116,7 @@ $("#canvas").on('mousedown', function(e){
                  {
                    if(current_lvl<3)
                         {
-                             // alert("Good job!");
+                             alert("Good job!");
                               current_lvl++; 
                               levelchange = true;    
                               next_lvl();
@@ -126,6 +126,7 @@ $("#canvas").on('mousedown', function(e){
                         }
                         else {
                           alert("Congratulations! You win!");
+                          document.location.reload();
                           //stopgame();
                         }
 
@@ -140,8 +141,9 @@ $("#canvas").on('mousedown', function(e){
 function next_lvl()
 {
 	 if (levelchange) {
-    context.drawImage(newlevel, 350, 200)
-    }
+     context.drawImage(newlevel, 350, 200)
+
+     }
     clearInterval(animation);
     context.clearRect(0, 0, canvas.width, canvas.height);
     countDown-=5;
@@ -149,8 +151,8 @@ function next_lvl()
     constructAnts(); // Fill the array with the points for the ants
     satkacikner=[];
     var animation = setInterval(animate,1);
-   
-
+     
+     
 
 }
 function drawScore() {
