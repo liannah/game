@@ -4,64 +4,65 @@
 let canvas = document.getElementById("canvas");
 let context = canvas.getContext("2d");
 
-canvas.width = window.innerWidth-25;
-canvas.height = window.innerHeight-150;
-
-
 
 let ants = document.getElementsByClassName("points");
-const NUM_POINTS = 2;
+const NUM_POINTS = 20;
 let points = [];
 let satkacikner = [];
-let countDown =20;
+let countDown = 30;
 let current_lvl = 1;
 
+function Backimgmosq(){
+    $("#canvas").css("background-image","url(./images/skybackground.jpg)");
+}
+function Backimg(){
+    $("#canvas").css("background-image","url(./images/grassantbck.jpg)","background-repeat: no-repeat");
+}
+function Backimgcock(){
+    $("#canvas").css("background-image","url(./images/cockroachbck.jpg)");
+}
 
 
 constructAnts();
 function constructAnts()
 {
-  for (let i = 0; i < NUM_POINTS; i++) {
+for (let i = 0; i < NUM_POINTS; i++) {
 
-      const size = 50+Math.random() * 100;
-      points.push({
-          x: Math.random() * (canvas.width - 2 * size),
-          y: Math.random() * (canvas.height - 2 * size),
-          height: size,
-          width:  2*size,
+    const size = 50+Math.random() * 50;
+    
+       let item={
+        x: Math.random() * (canvas.width - 2 * size),
+        y: Math.random() * (canvas.height - 2 * size),
 
-          xDelta: 1, // the change that you will add to x, you can flip it when you get to the edge
+        height: size,
+        width:  2*size,
 
-          yDelta: 0, // the change that you will add to y, you can flip it when you get to the edge
-          isDead: false
-      });
+        xDelta: 1, // the change that you will add to x, you can flip it when you get to the edge
+        yDelta: 0, // the change that you will add to y, you can flip it when you get to the edge
 
-      let item = {
+        isDead: false,
+       
+               }
 
-          x: Math.random() * (canvas.width - 2 * size),
+    item.xDelta = item.width / 100;
 
-      };
-      item.xDelta = item.width / 20;
+    points.push(item);
 
-      points.push(item);
-
-  }
+}
 }
 
 var leftimg = new Image();
-leftimg.src = "./newant.png";
+leftimg.src = "./images/ant.png";
 
 var rightimg = new Image();
-rightimg.src= "./newant2.png";
+rightimg.src= "./images/ant2.png";
 
 var img = new Image();
-img.src= "./yellow.png"
+img.src= "./images/yellow.png"
 
 var gameOverImage = new Image();
-gameOverImage.src = "./gameover.png";
+gameOverImage.src = "./images/gameover.png";
 
-var newlevel = new Image();
-newlevel.src = "./levelup.png";
 
 const draw = function () {
     //context.clearRect(0, 0, canvas.width, canvas.height);
@@ -118,11 +119,19 @@ $("#canvas").on('mousedown', function(e){
                    if(current_lvl<3)
                         {
                         	//levelchange = true;
-                            swal(
-                            'Good job!',
-                            'Next level!',
-                            'warning'
-                             )
+                            swal({
+                            title: 'Level up!',
+                            text: 'You are doing great',
+                            timer: 500
+                            }).then(
+                            function () {},
+                            // handling the promise rejection
+                            function (dismiss) {
+                            if (dismiss === 'timer') {
+                            console.log('I was closed by the timer')
+                                 }
+                                }
+                               )
                               current_lvl++; 
                               next_lvl();
                                     
@@ -163,8 +172,8 @@ function next_lvl()
 
 }
 function drawScore() {
-    context.font = "20px New Roman";
-    context.fillStyle = "#00000";
+    context.font = "20px Times-bold";
+    context.fillStyle = "#000000";
     context.fillText("Score: "+score, 100, 20);
     context.fillText("Level: "+current_lvl, 100, 40);
 }
@@ -172,23 +181,23 @@ function drawScore() {
 
 $('#mosq').on('click', function(){
 
-    leftimg.src = "./mosquito.png";
-    rightimg.src = "./mosquito2.png";
+    leftimg.src = "./images/mosquito.png";
+    rightimg.src = "./images/mosquito2.png";
 
 
 })
 
 $('#ant').on('click', function(){
 
-    leftimg.src = "./ant.png";
-    rightimg.src = "./ant2.png";
+    leftimg.src = "./images/ant.png";
+    rightimg.src = "./images/ant2.png";
 
 })
 
 $('#roach').on('click', function(){
 
-    leftimg.src = "./Cockroach.png";
-    rightimg.src = "./cockroach2.png";
+    leftimg.src = "./images/cockroach.png";
+    rightimg.src = "./images/cockroach2.png";
 
 })
 
@@ -201,10 +210,12 @@ let animate = function () {
 }
 var animation = setInterval(animate,1);
 //animate();
+$('#strtg').on('click', function (){
+    animate();
+    Backimg();
+});
 
 let sTime = new Date().getTime();
-
-
 
 function UpdateTime() {
     let cTime = new Date().getTime();
