@@ -6,7 +6,7 @@ let context = canvas.getContext("2d");
 
 
 let ants = document.getElementsByClassName("points");
-const NUM_POINTS = 20;
+const NUM_POINTS = 5;
 let points = [];
 let satkacikner = [];
 let countDown = 30;
@@ -167,7 +167,7 @@ function next_lvl()
     constructAnts(); // Fill the array with the points for the ants
     satkacikner=[];
     var animation = setInterval(animate,1);
-     
+           
      
 
 }
@@ -183,7 +183,7 @@ $('#mosq').on('click', function(){
 
     leftimg.src = "./images/mosquito.png";
     rightimg.src = "./images/mosquito2.png";
-
+    Backimgmosq(); 
 
 })
 
@@ -191,31 +191,34 @@ $('#ant').on('click', function(){
 
     leftimg.src = "./images/ant.png";
     rightimg.src = "./images/ant2.png";
-
+    Backimg(); 
 })
 
 $('#roach').on('click', function(){
 
     leftimg.src = "./images/cockroach.png";
     rightimg.src = "./images/cockroach2.png";
-
+    Backimgcock(); 
 })
 
 
 let animate = function () {
-
+        
     drawsatkacikner();
     draw();
-    //  requestAnimationFrame(animate);
+    //requestAnimationFrame(animate);
 }
-var animation = setInterval(animate,1);
+
 //animate();
 $('#strtg').on('click', function (){
+	constructAnts();
     animate();
     Backimg();
 });
 
 let sTime = new Date().getTime();
+var counter = setInterval(UpdateTime, 500);
+let animation = setInterval(animate,1);
 
 function UpdateTime() {
     let cTime = new Date().getTime();
@@ -229,14 +232,11 @@ function UpdateTime() {
     }
      else {
        $("#countdown").hide();
-       gameOver();
+        gameOver() 
        clearInterval(counter);
     }
 }
 UpdateTime();
-var counter = setInterval(UpdateTime, 1000);
-
-
 
 function gameOver()
 {
@@ -248,5 +248,3 @@ function gameOver()
   context.drawImage(gameOverImage, 350,100);
 
 }
-
-
